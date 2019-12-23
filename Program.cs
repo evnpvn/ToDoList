@@ -30,7 +30,7 @@ namespace ToDoList
                     string firsttaskUserinput = Console.ReadLine();
                     if(firsttaskUserinput == "0")
                     {
-                        //break;
+                        //do nothing;
                     }
                     else 
                     {
@@ -43,13 +43,12 @@ namespace ToDoList
 
                             if(twoOrMoreTasksUserInput == "0")
                             {
-                               //break;
+                               //do nothing;
                             }
                             else                         
                             {
                                 Tasks.Add(twoOrMoreTasksUserInput); //embed the line above once the new list functionality works
                             }
-
                         }
                         while(twoOrMoreTasksUserInput != "0");
                     }
