@@ -2,8 +2,8 @@ using System;
 
 namespace ToDoList
 {
-    class TodoListObj
+    class TodolistProgram
     {
-        
+            
     }
 }
