@@ -8,7 +8,7 @@ namespace ToDoList
     {
         public static void Main(string[] args)
         {
-            List<string> Tasks = new List<string>{};
+            Tasklist Tasks = new Tasklist{};
 
             string mainmenuUserinput = "";
 
@@ -38,11 +38,7 @@ namespace ToDoList
                             Console.WriteLine("Enter another task and hit return or 0 to exit");
                             twoOrMoreTasksUserInput = Console.ReadLine();
 
-                            if(twoOrMoreTasksUserInput == "0")
-                            {
-                               //do nothing;
-                            }
-                            else                         
+                            if(twoOrMoreTasksUserInput != "0")                      
                             {
                                 Tasks.Add(twoOrMoreTasksUserInput);
                             }
@@ -50,7 +46,6 @@ namespace ToDoList
                         while(twoOrMoreTasksUserInput != "0");
                     }
                 }
-                
                 if(mainmenuUserinput == "2")
                 {      
                     if(Tasks.Count == 0)
@@ -84,35 +79,26 @@ namespace ToDoList
                             //parse the digit character in the string into an integer
                             bool success = Int32.TryParse(inputStripped, out int convertedNumber);
 
-                            //TODO: Handle out of range execeptions 
+                            //FIXME: Handle out of range execeptions 
                             //if the index specified by the user is larger than the currently size of the Task list
 
                             if(success)
                             {
                                 if(showAllTasksInput.Contains("highest"))
                                 {
-                                    string taskItem = Tasks[convertedNumber - 1];
-                                    Tasks.RemoveAt(convertedNumber - 1);
-                                    Tasks.Insert(0, taskItem);
+                                    Tasks.Reprioritize("highest", convertedNumber);
                                 }                             
                                 else if(showAllTasksInput.Contains("lowest"))
                                 {
-                                    string taskItem = Tasks[convertedNumber - 1];
-                                    int taskCount = Tasks.Count;
-                                    Tasks.RemoveAt(convertedNumber - 1);
-                                    Tasks.Insert(taskCount - 1, taskItem);                               
+                                    Tasks.Reprioritize("lowest", convertedNumber);                           
                                 }
                                 else if(showAllTasksInput.Contains("higher"))
                                 {
-                                    string taskItem = Tasks[convertedNumber - 1];
-                                    Tasks.RemoveAt(convertedNumber - 1); 
-                                    Tasks.Insert(convertedNumber - 2 , taskItem);
+                                    Tasks.Reprioritize("higher", convertedNumber);
                                 }
                                 else if(showAllTasksInput.Contains("lower"))
                                 {
-                                    string taskItem = Tasks[convertedNumber - 1];
-                                    Tasks.RemoveAt(convertedNumber - 1); 
-                                    Tasks.Insert(convertedNumber, taskItem);
+                                    Tasks.Reprioritize("lower", convertedNumber);
                                 }
                             }
                         }
