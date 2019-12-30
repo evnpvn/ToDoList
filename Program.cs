@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Text.RegularExpressions;
 
 namespace ToDoList
 {
@@ -19,7 +20,7 @@ namespace ToDoList
                 Console.WriteLine("To select any of the functions below enter the related number and hit return");
                 Console.WriteLine("1 - Create a new task");
                 Console.WriteLine("2 - Show all tasks");
-                Console.WriteLine("3 - Exit program");
+                Console.WriteLine("9 - Exit program");
             
                 mainmenuUserinput = Console.ReadLine();
 
@@ -28,11 +29,7 @@ namespace ToDoList
                 {
                     Console.WriteLine("Enter a task and hit return or 0 to exit");
                     string firsttaskUserinput = Console.ReadLine();
-                    if(firsttaskUserinput == "0")
-                    {
-                        //do nothing;
-                    }
-                    else 
+                    if(firsttaskUserinput != "0")
                     {
                         Tasks.Add(firsttaskUserinput);
                         string twoOrMoreTasksUserInput = "";
@@ -47,7 +44,7 @@ namespace ToDoList
                             }
                             else                         
                             {
-                                Tasks.Add(twoOrMoreTasksUserInput); //embed the line above once the new list functionality works
+                                Tasks.Add(twoOrMoreTasksUserInput);
                             }
                         }
                         while(twoOrMoreTasksUserInput != "0");
@@ -55,21 +52,75 @@ namespace ToDoList
                 }
                 
                 if(mainmenuUserinput == "2")
-                {
+                {      
                     if(Tasks.Count == 0)
                     {
                         Console.WriteLine("No tasks found.");
                     }
                     else
                     {
-                        for(int priority = 1; priority <= Tasks.Count; priority++)
+                        string showAllTasksInput = "";
+                        do
                         {
-                            Console.WriteLine(priority + ": " + Tasks[priority - 1]);
-                        }
-                    }                   
-                }
+                            Console.WriteLine();
+                            Console.WriteLine("Current Tasks");
+                            for(int priority = 1; priority <= Tasks.Count; priority++)
+                            {
+                                Console.WriteLine(priority + ": " + Tasks[priority - 1]);
+                            }
+                            Console.WriteLine();
+                            Console.WriteLine("To reprioritize tasks enter the task number + any of the following options"); 
+                            Console.WriteLine(" \"highest\" - make task the highest priority  ");
+                            Console.WriteLine(" \"lowest\" - make task the lowest priority  ");
+                            Console.WriteLine(" \"higher\" - move task up 1 spot in the current order");
+                            Console.WriteLine(" \"lower\" - move task down 1 spot in the current order");
+                            Console.WriteLine("Example: \"3 highest\"");
+                            Console.WriteLine("Or to return to the main menu enter 0");
 
-            } while(mainmenuUserinput != "3");
+                            showAllTasksInput = Console.ReadLine();
+
+                            //strip out the digit character from the user input
+                            string inputStripped = Regex.Replace(showAllTasksInput, "[^0-9]", "");
+                            //parse the digit character in the string into an integer
+                            bool success = Int32.TryParse(inputStripped, out int convertedNumber);
+
+                            //TODO: Handle out of range execeptions 
+                            //if the index specified by the user is larger than the currently size of the Task list
+
+                            if(success)
+                            {
+                                if(showAllTasksInput.Contains("highest"))
+                                {
+                                    string taskItem = Tasks[convertedNumber - 1];
+                                    Tasks.RemoveAt(convertedNumber - 1);
+                                    Tasks.Insert(0, taskItem);
+                                }                             
+                                else if(showAllTasksInput.Contains("lowest"))
+                                {
+                                    string taskItem = Tasks[convertedNumber - 1];
+                                    int taskCount = Tasks.Count;
+                                    Tasks.RemoveAt(convertedNumber - 1);
+                                    Tasks.Insert(taskCount - 1, taskItem);                               
+                                }
+                                else if(showAllTasksInput.Contains("higher"))
+                                {
+                                    string taskItem = Tasks[convertedNumber - 1];
+                                    Tasks.RemoveAt(convertedNumber - 1); 
+                                    Tasks.Insert(convertedNumber - 2 , taskItem);
+                                }
+                                else if(showAllTasksInput.Contains("lower"))
+                                {
+                                    string taskItem = Tasks[convertedNumber - 1];
+                                    Tasks.RemoveAt(convertedNumber - 1); 
+                                    Tasks.Insert(convertedNumber, taskItem);
+                                }
+                            }
+                        }
+                        while(showAllTasksInput != "0");                                           
+                    }  
+                }
+            }
+            while(mainmenuUserinput != "9");
         }
     }
 }
