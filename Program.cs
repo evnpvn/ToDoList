@@ -56,10 +56,17 @@ namespace ToDoList
                 
                 if(mainmenuUserinput == "2")
                 {
-                    foreach(string task in Tasks)
+                    if(Tasks.Count == 0)
                     {
-                        Console.WriteLine(task);
+                        Console.WriteLine("No tasks found.");
                     }
+                    else
+                    {
+                        for(int priority = 1; priority <= Tasks.Count; priority++)
+                        {
+                            Console.WriteLine(priority + ": " + Tasks[priority - 1]);
+                        }
+                    }                   
                 }
 
             } while(mainmenuUserinput != "3");
