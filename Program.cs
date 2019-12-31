@@ -15,19 +15,13 @@ namespace ToDoList
 
             do
             {
-                //prompt the user for what they want to do
-                WriteLine();
-                WriteLine("Main Menu");
-                WriteLine("To select any of the functions below enter the related number and hit return");
-                WriteLine("1 - Create a new task");
-                WriteLine("2 - Show all tasks");
-                WriteLine("9 - Exit program");
-            
+                PrintMainMenu();         
                 mainmenuUserinput = ReadLine();
 
                 //prompt the user for input from the console to create a task
                 if(mainmenuUserinput == "1")
                 {
+                    WriteLine();
                     WriteLine("Enter a task and hit return or 0 to exit");
                     string firsttaskUserinput = ReadLine();
                     if(firsttaskUserinput != "0")
@@ -36,6 +30,7 @@ namespace ToDoList
                         string twoOrMoreTasksUserInput = "";
                         do
                         {
+                            WriteLine();
                             WriteLine("Enter another task and hit return or 0 to exit");
                             twoOrMoreTasksUserInput = ReadLine();
 
@@ -64,29 +59,26 @@ namespace ToDoList
                             {
                                 WriteLine(priority + ": " + Tasks[priority - 1]);
                             }
-                            WriteLine();
-                            WriteLine("To reprioritize tasks enter the task number + any of the following options"); 
-                            WriteLine(" \"highest\" - make task the highest priority  ");
-                            WriteLine(" \"lowest\" - make task the lowest priority  ");
-                            WriteLine(" \"higher\" - move task up 1 spot in the current order");
-                            WriteLine(" \"lower\" - move task down 1 spot in the current order");
-                            WriteLine("Example: \"3 highest\"");
-                            WriteLine("Or to return to the main menu enter 0");
 
+                            PrintPrioritizeMenu();
                             showAllTasksInput = ReadLine();
 
                             //strip out the digit character from the user input
                             string inputStripped = Regex.Replace(showAllTasksInput, "[^0-9]", "");
+
                             //parse the digit character in the string into an integer
-                            bool success = Int32.TryParse(inputStripped, out int convertedNumber);
+                            bool strippingSuccess = Int32.TryParse(inputStripped, out int convertedNumber);
+                            int index = convertedNumber - 1;
 
-                            //FIXME: Handle out of range execeptions 
-                            //if the index specified by the user is larger than the currently size of the Task list
-
-                            if(success)
+                            if(strippingSuccess)
                             {
-                                string prioritySetting = PrioritySetting(showAllTasksInput);
-                                Tasks.Reprioritize(prioritySetting, convertedNumber);
+                                //FIXME: Need to handle this exception. Printing to the console won't happen
+                                //because the exeption is being thrown first
+                                if(index < Tasks.Count)
+                                {
+                                    string prioritySetting = PrioritySetting(showAllTasksInput);
+                                    Tasks.Reprioritize(prioritySetting, index); 
+                                }
                             }
                         }
                         while(showAllTasksInput != "0");                                           
