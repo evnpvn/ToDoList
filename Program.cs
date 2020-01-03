@@ -60,7 +60,7 @@ namespace ToDoList
                             }
 
                             PrintPrioritizeMenu();
-                            showAllTasksInput = ReadLine();
+                            showAllTasksInput = ReadLine().ToUpper();
 
                             //strip out the digit character from the user input
                             string inputStripped = Regex.Replace(showAllTasksInput, "[^0-9]", "");
@@ -74,9 +74,7 @@ namespace ToDoList
                                 string prioritySetting = PrioritySetting(showAllTasksInput);
 
                                 try
-                                {           
-                                    //FIXME: Need to handle this exception. Printing to the console won't happen
-                                    //because the exeption is being thrown first
+                                {
                                     Tasks.Reprioritize(prioritySetting, index); 
                                 }
                                 catch(System.ArgumentOutOfRangeException)

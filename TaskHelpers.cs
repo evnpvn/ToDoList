@@ -29,27 +29,24 @@ namespace ToDoList
 
         public static string PrioritySetting(string showAllTasksInput)
         {
-            if(showAllTasksInput.Contains("highest"))
+            if(showAllTasksInput.Contains("HIGHEST"))
             {
                 return "highest";
             }
-            else if(showAllTasksInput.Contains("lowest"))
+            else if(showAllTasksInput.Contains("LOWEST"))
             {
                 return "lowest";
             }
-            else if(showAllTasksInput.Contains("higher"))
+            else if(showAllTasksInput.Contains("HIGHER"))
             {
                 return "higher";
             }
-            else if(showAllTasksInput.Contains("lower"))
+            else if(showAllTasksInput.Contains("LOWER"))
             {
                 return "lower";
             }
             else
             {
-                //FIXME: Currently this is dropping the task from the list. 
-                WriteLine("Invalid input value for setting task priority");
-                WriteLine();
                 return ""; 
             }
         }
