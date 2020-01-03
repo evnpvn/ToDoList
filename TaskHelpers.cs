@@ -47,7 +47,9 @@ namespace ToDoList
             }
             else
             {
-                Console.WriteLine("Invalid input value for setting task priority");
+                //FIXME: Currently this is dropping the task from the list. 
+                WriteLine("Invalid input value for setting task priority");
+                WriteLine();
                 return ""; 
             }
         }

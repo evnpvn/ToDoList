@@ -17,8 +17,6 @@ namespace ToDoList
             {
                 PrintMainMenu();         
                 mainmenuUserinput = ReadLine();
-
-                //prompt the user for input from the console to create a task
                 if(mainmenuUserinput == "1")
                 {
                     WriteLine();
@@ -46,6 +44,7 @@ namespace ToDoList
                 {      
                     if(Tasks.Count == 0)
                     {
+                        WriteLine();
                         WriteLine("No tasks found.");
                     }
                     else
@@ -72,12 +71,17 @@ namespace ToDoList
 
                             if(strippingSuccess)
                             {
-                                //FIXME: Need to handle this exception. Printing to the console won't happen
-                                //because the exeption is being thrown first
-                                if(index < Tasks.Count)
-                                {
-                                    string prioritySetting = PrioritySetting(showAllTasksInput);
+                                string prioritySetting = PrioritySetting(showAllTasksInput);
+
+                                try
+                                {           
+                                    //FIXME: Need to handle this exception. Printing to the console won't happen
+                                    //because the exeption is being thrown first
                                     Tasks.Reprioritize(prioritySetting, index); 
+                                }
+                                catch(System.ArgumentOutOfRangeException)
+                                {
+                                    WriteLine("No task number \"" + convertedNumber + "\" exists");
                                 }
                             }
                         }
