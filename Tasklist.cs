@@ -6,6 +6,30 @@ namespace ToDoList
 {
     public class Tasklist : List<string>
     {
+        public bool TasksIsNull()
+        {          
+            if(this.Count == 0)
+            {
+                WriteLine();
+                WriteLine("No tasks found.");
+                return true;
+            }
+            else
+            {
+                return false;
+            }            
+        }
+
+        public void PrintAllTasks()
+        {
+            WriteLine();
+            WriteLine("Current Tasks");
+            for(int priority = 1; priority <= this.Count; priority++)
+            {
+                WriteLine(priority + ": " + this[priority - 1]);
+            }
+        }
+
         public void Reprioritize(string prioritySetting, int index)
         {   
             string taskItem = this[index];

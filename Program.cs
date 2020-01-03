@@ -42,23 +42,12 @@ namespace ToDoList
                 }
                 if(mainmenuUserinput == "2")
                 {      
-                    if(Tasks.Count == 0)
-                    {
-                        WriteLine();
-                        WriteLine("No tasks found.");
-                    }
-                    else
+                    if(Tasks.TasksIsNull() == false)
                     {
                         string showAllTasksInput = "";
                         do
                         {
-                            WriteLine();
-                            WriteLine("Current Tasks");
-                            for(int priority = 1; priority <= Tasks.Count; priority++)
-                            {
-                                WriteLine(priority + ": " + Tasks[priority - 1]);
-                            }
-
+                            Tasks.PrintAllTasks();
                             PrintPrioritizeMenu();
                             showAllTasksInput = ReadLine().ToUpper();
 
@@ -72,7 +61,6 @@ namespace ToDoList
                             if(strippingSuccess)
                             {
                                 string prioritySetting = PrioritySetting(showAllTasksInput);
-
                                 try
                                 {
                                     Tasks.Reprioritize(prioritySetting, index); 
@@ -85,6 +73,43 @@ namespace ToDoList
                         }
                         while(showAllTasksInput != "0");                                           
                     }  
+                }
+                if(mainmenuUserinput == "3")
+                {      
+                    if(Tasks.TasksIsNull() == false)
+                    {
+                        string editTasksInput = "";
+                        do
+                        {
+                            Tasks.PrintAllTasks();
+                            PrintEditMenu();
+                            editTasksInput = ReadLine().ToUpper();
+
+                            //parse response to see if they prompted editing.
+                            //strip out the digit character from the user input
+                            string inputStripped = Regex.Replace(editTasksInput, "[^0-9]", "");
+
+                            //parse the digit character in the string into an integer
+                            bool strippingSuccess = Int32.TryParse(inputStripped, out int convertedNumber);
+                            int index = convertedNumber - 1;
+
+                            if(strippingSuccess)
+                            {
+                                if(editTasksInput.Contains("EDIT"))
+                                {
+                                    PrintEditSubmenu();
+                                    string editResponse = ReadLine();
+                                    Tasks[index] = editResponse;
+                                    //FIXME: currently cancelling also edits the task to "0"
+                                    //add an if statement for this separate condition
+
+                                    //FIXME: handle outofrange
+                                    //this should be handled right before the submenu is presented.
+                                }
+                            }
+                        }
+                        while(editTasksInput != "0");
+                    } 
                 }
             }
             while(mainmenuUserinput != "9");

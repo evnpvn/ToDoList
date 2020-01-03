@@ -12,6 +12,7 @@ namespace ToDoList
             WriteLine("To select any of the functions below enter the related number and hit return");
             WriteLine("1 - Create a new task");
             WriteLine("2 - Show all tasks");
+            WriteLine("3 - Edit existing tasks");
             WriteLine("9 - Exit program");
         }
 
@@ -25,6 +26,20 @@ namespace ToDoList
             WriteLine(" lower - move task down 1 spot in the current order");
             WriteLine("Example: 3 highest");
             WriteLine("Or to return to the main menu enter 0");
+        }
+
+        public static void PrintEditMenu()
+        {
+            WriteLine();
+            WriteLine("To edit a task enter the task number + edit"); 
+            WriteLine("Example: 2 edit");
+            WriteLine("Or to return to the main menu enter 0");
+        }
+        public static void PrintEditSubmenu()
+        {
+            WriteLine();
+            WriteLine("Enter the new task name and hit return");
+            WriteLine("Or to cancel enter 0");
         }
 
         public static string PrioritySetting(string showAllTasksInput)
