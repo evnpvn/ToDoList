@@ -20,6 +20,18 @@ namespace ToDoList
             }            
         }
 
+        public bool ValidateIndex(int index)
+        {
+            if(index < (this.Count - 1))
+            {
+                return true;
+            }
+            else
+            {
+                return false;
+            }
+        }
+
         public void PrintAllTasks()
         {
             WriteLine();

@@ -95,16 +95,32 @@ namespace ToDoList
 
                             if(strippingSuccess)
                             {
+                                //FIXME: handle outofrange
+                                //this should be handled right before the submenu is presented.
+                                //I've validated out of range but I should still add a try catch incase it was forced in there.
+                                
                                 if(editTasksInput.Contains("EDIT"))
                                 {
-                                    PrintEditSubmenu();
-                                    string editResponse = ReadLine();
-                                    Tasks[index] = editResponse;
-                                    //FIXME: currently cancelling also edits the task to "0"
-                                    //add an if statement for this separate condition
-
-                                    //FIXME: handle outofrange
-                                    //this should be handled right before the submenu is presented.
+                                    if(Tasks.ValidateIndex(index) == true)
+                                    {
+                                        PrintEditSubmenu();
+                                        string editResponse = ReadLine();
+                                        if(editResponse != "0")
+                                        {
+                                            Tasks[index] = editResponse;
+                                        }
+                                    }
+                                    else
+                                    {
+                                        WriteLine("No task number \"" + convertedNumber + "\" exists");
+                                    }
+                                }
+                                //FIXME: These validations broke the ability to cleanly escape with "0"
+                                //Fix how these conditional statements are positioned.
+                                //Go through top to bottom.
+                                else
+                                {
+                                    WriteLine("Not a valid option entered");
                                 }
                             }
                         }
