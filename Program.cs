@@ -93,10 +93,6 @@ namespace ToDoList
 
                                 if(strippingSuccess == true)
                                 {
-                                    //FIXME: handle outofrange
-                                    //this should be handled right before the submenu is presented.
-                                    //I've validated out of range but I should still add a try catch incase it was forced in there.
-                                    
                                     if(editTasksInput.Contains("EDIT"))
                                     {
                                         if(Tasks.ValidateIndex(index) == true)
@@ -105,7 +101,14 @@ namespace ToDoList
                                             string editResponse = ReadLine();
                                             if(editResponse != "0")
                                             {
-                                                Tasks[index] = editResponse;
+                                                try
+                                                {
+                                                    Tasks[index] = editResponse;
+                                                }
+                                                catch(System.ArgumentOutOfRangeException)
+                                                {
+                                                    WriteLine("No task number \"" + convertedNumber + "\" exists");
+                                                }
                                             }
                                         }
                                         else
@@ -115,6 +118,7 @@ namespace ToDoList
                                     }
                                     else
                                     {
+                                        WriteLine();
                                         WriteLine("Not a valid option entered");
                                     }
                                 }
