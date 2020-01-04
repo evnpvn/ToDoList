@@ -58,7 +58,7 @@ namespace ToDoList
                             bool strippingSuccess = Int32.TryParse(inputStripped, out int convertedNumber);
                             int index = convertedNumber - 1;
 
-                            if(strippingSuccess)
+                            if(strippingSuccess == true)
                             {
                                 string prioritySetting = PrioritySetting(showAllTasksInput);
                                 try
@@ -84,43 +84,39 @@ namespace ToDoList
                             Tasks.PrintAllTasks();
                             PrintEditMenu();
                             editTasksInput = ReadLine().ToUpper();
-
-                            //parse response to see if they prompted editing.
-                            //strip out the digit character from the user input
-                            string inputStripped = Regex.Replace(editTasksInput, "[^0-9]", "");
-
-                            //parse the digit character in the string into an integer
-                            bool strippingSuccess = Int32.TryParse(inputStripped, out int convertedNumber);
-                            int index = convertedNumber - 1;
-
-                            if(strippingSuccess)
+                            
+                            if(editTasksInput != "0")
                             {
-                                //FIXME: handle outofrange
-                                //this should be handled right before the submenu is presented.
-                                //I've validated out of range but I should still add a try catch incase it was forced in there.
-                                
-                                if(editTasksInput.Contains("EDIT"))
+                                string inputStripped = Regex.Replace(editTasksInput, "[^0-9]", "");
+                                bool strippingSuccess = Int32.TryParse(inputStripped, out int convertedNumber);
+                                int index = convertedNumber - 1;
+
+                                if(strippingSuccess == true)
                                 {
-                                    if(Tasks.ValidateIndex(index) == true)
+                                    //FIXME: handle outofrange
+                                    //this should be handled right before the submenu is presented.
+                                    //I've validated out of range but I should still add a try catch incase it was forced in there.
+                                    
+                                    if(editTasksInput.Contains("EDIT"))
                                     {
-                                        PrintEditSubmenu();
-                                        string editResponse = ReadLine();
-                                        if(editResponse != "0")
+                                        if(Tasks.ValidateIndex(index) == true)
                                         {
-                                            Tasks[index] = editResponse;
+                                            PrintEditSubmenu();
+                                            string editResponse = ReadLine();
+                                            if(editResponse != "0")
+                                            {
+                                                Tasks[index] = editResponse;
+                                            }
+                                        }
+                                        else
+                                        {
+                                            WriteLine("No task number \"" + convertedNumber + "\" exists");
                                         }
                                     }
                                     else
                                     {
-                                        WriteLine("No task number \"" + convertedNumber + "\" exists");
+                                        WriteLine("Not a valid option entered");
                                     }
-                                }
-                                //FIXME: These validations broke the ability to cleanly escape with "0"
-                                //Fix how these conditional statements are positioned.
-                                //Go through top to bottom.
-                                else
-                                {
-                                    WriteLine("Not a valid option entered");
                                 }
                             }
                         }
