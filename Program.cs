@@ -1,5 +1,4 @@
 ﻿using System;
-using System.Text.RegularExpressions;
 using static ToDoList.TaskHelpers;
 using static System.Console;
 
@@ -10,7 +9,6 @@ namespace ToDoList
         public static void Main(string[] args)
         {
             Tasklist Tasks = new Tasklist{};
-
             string mainmenuUserinput = "";
 
             do
@@ -51,14 +49,10 @@ namespace ToDoList
                             PrintPrioritizeMenu();
                             showAllTasksInput = ReadLine().ToUpper();
 
-                            //strip out the digit character from the user input
-                            string inputStripped = Regex.Replace(showAllTasksInput, "[^0-9]", "");
+                            MathMethods PriorityDigitparsing = new MathMethods();
+                            int index = PriorityDigitparsing.ParseDigitToIndex(showAllTasksInput);
 
-                            //parse the digit character in the string into an integer
-                            bool strippingSuccess = Int32.TryParse(inputStripped, out int convertedNumber);
-                            int index = convertedNumber - 1;
-
-                            if(strippingSuccess == true)
+                            if(PriorityDigitparsing.strippingSuccess == true)
                             {
                                 string prioritySetting = PrioritySetting(showAllTasksInput);
                                 try
@@ -67,7 +61,7 @@ namespace ToDoList
                                 }
                                 catch(System.ArgumentOutOfRangeException)
                                 {
-                                    WriteLine("No task number \"" + convertedNumber + "\" exists");
+                                    WriteLine("No task number \"" + (index + 1) + "\" exists");
                                 }
                             }
                         }
@@ -87,11 +81,10 @@ namespace ToDoList
                             
                             if(editTasksInput != "0")
                             {
-                                string inputStripped = Regex.Replace(editTasksInput, "[^0-9]", "");
-                                bool strippingSuccess = Int32.TryParse(inputStripped, out int convertedNumber);
-                                int index = convertedNumber - 1;
+                                MathMethods EditingDigitparsing = new MathMethods();
+                                int index = EditingDigitparsing.ParseDigitToIndex(editTasksInput);
 
-                                if(strippingSuccess == true)
+                                if(EditingDigitparsing.strippingSuccess == true)
                                 {
                                     if(editTasksInput.Contains("EDIT"))
                                     {
@@ -107,13 +100,13 @@ namespace ToDoList
                                                 }
                                                 catch(System.ArgumentOutOfRangeException)
                                                 {
-                                                    WriteLine("No task number \"" + convertedNumber + "\" exists");
+                                                    WriteLine("No task number \"" + (index + 1) + "\" exists");
                                                 }
                                             }
                                         }
                                         else
                                         {
-                                            WriteLine("No task number \"" + convertedNumber + "\" exists");
+                                            WriteLine("No task number \"" + (index + 1) + "\" exists");
                                         }
                                     }
                                     else
