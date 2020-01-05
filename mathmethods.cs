@@ -5,6 +5,7 @@ namespace ToDoList
 {
     public class MathMethods
     {
+        //the way I did this may always result in strippingSuccess being set to true.
         private bool _strippingSuccess;
         public bool strippingSuccess { get => _strippingSuccess; set => _strippingSuccess = true; }
 
@@ -19,7 +20,6 @@ namespace ToDoList
             //parse the digit character in the string into an integer
             strippingSuccess = Int32.TryParse(inputStripped, out int convertedNumber);
 
-            //FIXME: need to return the index + the stripping success bool
             return (convertedNumber - 1);
         }
     }
