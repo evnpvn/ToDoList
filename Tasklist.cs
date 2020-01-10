@@ -6,12 +6,6 @@ namespace ToDoList
 {
     public class Tasklist : List<List<string>>
     {
-        //this should be fine because for a member to exist in the parent list it would
-        //need to contain a list which contained a string (main task)
-        //as long as the parent list isn't initialized with a bunch of list members.
-        //if it is (which it may be) then we will need to re-write this to look into the sublists
-        //and count the number of sublists that have a member in index = 0
-        // {{TaskA}, {TaskB}}
         public bool TasksIsNull()
         {          
             if(this.Count == 0)
@@ -26,7 +20,6 @@ namespace ToDoList
             }            
         }
 
-        //same thing as count.
         public bool ValidateIndex(int index)
         {
             if(index < (this.Count) && index > 0)
@@ -39,14 +32,29 @@ namespace ToDoList
             }
         }
 
-        //This will need an embedded foreach to print the list strings within the list.
         public void PrintAllTasks()
         {
             WriteLine();
             WriteLine("Current Tasks");
-            for(int priority = 1; priority <= this.Count; priority++)
+            int prefix = 1;
+            foreach(List<string> sublist in this)
             {
-                WriteLine(priority + ": " + this[priority - 1]);
+                //FIXME: Going out of range when printing the subtasks.
+
+                //in my test there were no subtasks
+
+                for(int subtaskIndex = 0; subtaskIndex < sublist.Count; subtaskIndex++)
+                {
+                    if(subtaskIndex == 0)
+                    {
+                        WriteLine(prefix + ": " + sublist[subtaskIndex]);
+                    }
+                    else
+                    {
+                        WriteLine("- " + sublist[subtaskIndex]);
+                    }
+                }
+                prefix++;
             }
         }
 

@@ -45,7 +45,8 @@ namespace ToDoList
                         while(twoOrMoreTasksUserInput != "0");
                     }
                 }
-                /*if(mainmenuUserinput == "2")
+                /*
+                if(mainmenuUserinput == "2")
                 {      
                     if(tasks.TasksIsNull() == false)
                     {
@@ -75,6 +76,7 @@ namespace ToDoList
                         while(showAllTasksInput != "0");                                           
                     }  
                 }
+                */
                 if(mainmenuUserinput == "3")
                 {      
                     if(tasks.TasksIsNull() == false)
@@ -103,7 +105,7 @@ namespace ToDoList
                                             {
                                                 try
                                                 {
-                                                    tasks[index] = editResponse;
+                                                    tasks[index][0] = editResponse;
                                                 }
                                                 catch(System.ArgumentOutOfRangeException)
                                                 {
@@ -127,6 +129,7 @@ namespace ToDoList
                         while(editTasksInput != "0");
                     } 
                 }
+                /*
                 if(mainmenuUserinput == "4")
                 {
                     if(tasks.TasksIsNull() == false)
@@ -192,7 +195,8 @@ namespace ToDoList
                         }
                         while(subTasksInput != "0");                                           
                     }  
-                }*/
+                }
+                */
             }
             while(mainmenuUserinput != "9");
         }
