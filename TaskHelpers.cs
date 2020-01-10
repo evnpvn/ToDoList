@@ -14,6 +14,7 @@ namespace ToDoList
             WriteLine("1 - Create a new task");
             WriteLine("2 - Show all tasks");
             WriteLine("3 - Edit existing tasks");
+            WriteLine("4 - Create new sub-task")
             WriteLine("9 - Exit program");
         }
 
@@ -41,6 +42,11 @@ namespace ToDoList
             WriteLine();
             WriteLine("Enter the new task name and hit return");
             WriteLine("Or to cancel enter 0");
+        }
+
+        public static void NoTaskExists()
+        {
+            WriteLine("No task number \"" + (index + 1) + "\" exists");
         }
 
         public static string PrioritySetting(string showAllTasksInput)

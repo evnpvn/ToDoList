@@ -61,7 +61,7 @@ namespace ToDoList
                                 }
                                 catch(System.ArgumentOutOfRangeException)
                                 {
-                                    WriteLine("No task number \"" + (index + 1) + "\" exists");
+                                    NoTaskExists();
                                 }
                             }
                         }
@@ -100,13 +100,13 @@ namespace ToDoList
                                                 }
                                                 catch(System.ArgumentOutOfRangeException)
                                                 {
-                                                    WriteLine("No task number \"" + (index + 1) + "\" exists");
+                                                    NoTaskExists();;
                                                 }
                                             }
                                         }
                                         else
                                         {
-                                            WriteLine("No task number \"" + (index + 1) + "\" exists");
+                                            NoTaskExists();
                                         }
                                     }
                                     else
