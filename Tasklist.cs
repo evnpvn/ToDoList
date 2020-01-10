@@ -39,10 +39,6 @@ namespace ToDoList
             int prefix = 1;
             foreach(List<string> sublist in this)
             {
-                //FIXME: Going out of range when printing the subtasks.
-
-                //in my test there were no subtasks
-
                 for(int subtaskIndex = 0; subtaskIndex < sublist.Count; subtaskIndex++)
                 {
                     if(subtaskIndex == 0)

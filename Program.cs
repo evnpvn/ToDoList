@@ -129,7 +129,6 @@ namespace ToDoList
                         while(editTasksInput != "0");
                     } 
                 }
-                /*
                 if(mainmenuUserinput == "4")
                 {
                     if(tasks.TasksIsNull() == false)
@@ -143,8 +142,8 @@ namespace ToDoList
 
                             MathMethods SubTaskDigitparsing = new MathMethods();
                             int index = SubTaskDigitparsing.ParseDigitToIndex(subTasksInput);
-
-                            if(SubTaskDigitparsing.strippingSuccess == true)
+                            
+                            if(SubTaskDigitparsing.strippingSuccess == true && subTasksInput != "0")
                             {
                                 if(subTasksInput.Contains("SUB"))
                                 {
@@ -155,25 +154,9 @@ namespace ToDoList
                                         if(subTaskResponse != "0")
                                         {
                                             try
-                                            {
-                                                //create a list within the list
-                                                //this actually may eff up everything else because now the object
-                                                //is no longer a list it's a list of lists
-                                                //let's play it out and see
-                                                //otherwise we will need to change the class
-                                                //and initialize it as a list of lists.
-                                                
-                                                //IF no subtasks exists
-                                                //create a list and initialize it with the task as index 0
-                                                //and the sub-task as 1
-                                                //insert list into the index that the current member is at
-
-                                                //the list will contain the task as 
-
-                                                //IF subtasks exist then add the new subtask as the last item
-
-                                                //Pretty sure this is going to eff everything up.
-
+                                            {                                               
+                                                List<string> subtasklist = tasks[index];
+                                                subtasklist.Add(subTaskResponse);                              
                                             }
                                             catch(System.ArgumentOutOfRangeException)
                                             {
@@ -196,7 +179,6 @@ namespace ToDoList
                         while(subTasksInput != "0");                                           
                     }  
                 }
-                */
             }
             while(mainmenuUserinput != "9");
         }
