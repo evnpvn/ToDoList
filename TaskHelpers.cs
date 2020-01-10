@@ -14,7 +14,7 @@ namespace ToDoList
             WriteLine("1 - Create a new task");
             WriteLine("2 - Show all tasks");
             WriteLine("3 - Edit existing tasks");
-            WriteLine("4 - Create new sub-task")
+            WriteLine("4 - Create new sub-task");
             WriteLine("9 - Exit program");
         }
 
@@ -30,6 +30,21 @@ namespace ToDoList
             WriteLine("Or to return to the main menu enter 0");
         }
 
+        public static void PrintSubTasksMenu()
+        {
+            WriteLine();
+            WriteLine("To add a sub-task to any existing task enter the task number + sub");
+            WriteLine("Example: 1 sub");
+            WriteLine("Or to return to the main menu enter 0");         
+        }
+
+        public static void PrintSubTasksSubMenu()
+        {
+            WriteLine();
+            WriteLine("Enter a sub-task and hit return");
+            WriteLine("Or to cancel enter 0");  
+        }    
+
         public static void PrintEditMenu()
         {
             WriteLine();
@@ -44,7 +59,7 @@ namespace ToDoList
             WriteLine("Or to cancel enter 0");
         }
 
-        public static void NoTaskExists()
+        public static void NoTaskExists(int index)
         {
             WriteLine("No task number \"" + (index + 1) + "\" exists");
         }
