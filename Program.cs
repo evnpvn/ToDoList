@@ -1,6 +1,7 @@
 ﻿using System;
 using static ToDoList.TaskHelpers;
 using static System.Console;
+using System.Collections.Generic;
 
 namespace ToDoList
 {
@@ -8,7 +9,8 @@ namespace ToDoList
     {
         public static void Main(string[] args)
         {
-            Tasklist Tasks = new Tasklist{};
+            //this is now a List of Lists of strings which is null
+            Tasklist tasks = new Tasklist{};
             string mainmenuUserinput = "";
 
             do
@@ -22,7 +24,10 @@ namespace ToDoList
                     string firsttaskUserinput = ReadLine();
                     if(firsttaskUserinput != "0")
                     {
-                        Tasks.Add(firsttaskUserinput);
+                        List<string> firstSubList = new List<string>{};
+                        firstSubList.Add(firsttaskUserinput);
+                        tasks.Add(firstSubList);
+
                         string twoOrMoreTasksUserInput = "";
                         do
                         {
@@ -32,20 +37,22 @@ namespace ToDoList
 
                             if(twoOrMoreTasksUserInput != "0")                      
                             {
-                                Tasks.Add(twoOrMoreTasksUserInput);
+                                List<string> nextSubList = new List<string>{};
+                                nextSubList.Add(twoOrMoreTasksUserInput);
+                                tasks.Add(nextSubList);
                             }
                         }
                         while(twoOrMoreTasksUserInput != "0");
                     }
                 }
-                if(mainmenuUserinput == "2")
+                /*if(mainmenuUserinput == "2")
                 {      
-                    if(Tasks.TasksIsNull() == false)
+                    if(tasks.TasksIsNull() == false)
                     {
                         string showAllTasksInput = "";
                         do
                         {
-                            Tasks.PrintAllTasks();
+                            tasks.PrintAllTasks();
                             PrintPrioritizeMenu();
                             showAllTasksInput = ReadLine().ToUpper();
 
@@ -57,7 +64,7 @@ namespace ToDoList
                                 string prioritySetting = PrioritySetting(showAllTasksInput);
                                 try
                                 {
-                                    Tasks.Reprioritize(prioritySetting, index); 
+                                    tasks.Reprioritize(prioritySetting, index); 
                                 }
                                 catch(System.ArgumentOutOfRangeException)
                                 {
@@ -70,12 +77,12 @@ namespace ToDoList
                 }
                 if(mainmenuUserinput == "3")
                 {      
-                    if(Tasks.TasksIsNull() == false)
+                    if(tasks.TasksIsNull() == false)
                     {
                         string editTasksInput = "";
                         do
                         {
-                            Tasks.PrintAllTasks();
+                            tasks.PrintAllTasks();
                             PrintEditMenu();
                             editTasksInput = ReadLine().ToUpper();
                             
@@ -88,7 +95,7 @@ namespace ToDoList
                                 {
                                     if(editTasksInput.Contains("EDIT"))
                                     {
-                                        if(Tasks.ValidateIndex(index) == true)
+                                        if(tasks.ValidateIndex(index) == true)
                                         {
                                             PrintEditSubmenu();
                                             string editResponse = ReadLine();
@@ -96,7 +103,7 @@ namespace ToDoList
                                             {
                                                 try
                                                 {
-                                                    Tasks[index] = editResponse;
+                                                    tasks[index] = editResponse;
                                                 }
                                                 catch(System.ArgumentOutOfRangeException)
                                                 {
@@ -122,12 +129,12 @@ namespace ToDoList
                 }
                 if(mainmenuUserinput == "4")
                 {
-                    if(Tasks.TasksIsNull() == false)
+                    if(tasks.TasksIsNull() == false)
                     {
                         string subTasksInput = "";
                         do
                         {
-                            Tasks.PrintAllTasks();
+                            tasks.PrintAllTasks();
                             PrintSubTasksMenu();
                             subTasksInput = ReadLine().ToUpper();
 
@@ -138,7 +145,7 @@ namespace ToDoList
                             {
                                 if(subTasksInput.Contains("SUB"))
                                 {
-                                    if(Tasks.ValidateIndex(index) == true)
+                                    if(tasks.ValidateIndex(index) == true)
                                     {
                                         PrintSubTasksSubMenu();
                                         string subTaskResponse = ReadLine();
@@ -185,7 +192,7 @@ namespace ToDoList
                         }
                         while(subTasksInput != "0");                                           
                     }  
-                }
+                }*/
             }
             while(mainmenuUserinput != "9");
         }

@@ -4,8 +4,14 @@ using static System.Console;
 
 namespace ToDoList
 {
-    public class Tasklist : List<string>
+    public class Tasklist : List<List<string>>
     {
+        //this should be fine because for a member to exist in the parent list it would
+        //need to contain a list which contained a string (main task)
+        //as long as the parent list isn't initialized with a bunch of list members.
+        //if it is (which it may be) then we will need to re-write this to look into the sublists
+        //and count the number of sublists that have a member in index = 0
+        // {{TaskA}, {TaskB}}
         public bool TasksIsNull()
         {          
             if(this.Count == 0)
@@ -20,6 +26,7 @@ namespace ToDoList
             }            
         }
 
+        //same thing as count.
         public bool ValidateIndex(int index)
         {
             if(index < (this.Count) && index > 0)
@@ -32,6 +39,7 @@ namespace ToDoList
             }
         }
 
+        //This will need an embedded foreach to print the list strings within the list.
         public void PrintAllTasks()
         {
             WriteLine();
@@ -42,6 +50,7 @@ namespace ToDoList
             }
         }
 
+        /*
         public void Reprioritize(string prioritySetting, int index)
         {   
             string taskItem = this[index];
@@ -86,5 +95,6 @@ namespace ToDoList
                 WriteLine("Not a valid re-prioritization option");
             }
         }
+        */
     }
 }
