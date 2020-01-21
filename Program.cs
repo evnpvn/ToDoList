@@ -45,7 +45,6 @@ namespace ToDoList
                         while(twoOrMoreTasksUserInput != "0");
                     }
                 }
-                /*
                 if(mainmenuUserinput == "2")
                 {      
                     if(tasks.TasksIsNull() == false)
@@ -76,7 +75,6 @@ namespace ToDoList
                         while(showAllTasksInput != "0");                                           
                     }  
                 }
-                */
                 if(mainmenuUserinput == "3")
                 {      
                     if(tasks.TasksIsNull() == false)
@@ -136,6 +134,8 @@ namespace ToDoList
                         string subTasksInput = "";
                         do
                         {
+                            //FIXME: some off by 1 error present (no task "1" exists
+                            
                             tasks.PrintAllTasks();
                             PrintSubTasksMenu();
                             subTasksInput = ReadLine().ToUpper();
