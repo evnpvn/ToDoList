@@ -4,7 +4,7 @@ using static System.Console;
 
 namespace ToDoList
 {
-    public class Tasklist : List<string>
+    public class Tasklist : List<List<string>>
     {
         public bool TasksIsNull()
         {          
@@ -36,32 +36,44 @@ namespace ToDoList
         {
             WriteLine();
             WriteLine("Current Tasks");
-            for(int priority = 1; priority <= this.Count; priority++)
+            int prefix = 1;
+            foreach(List<string> sublist in this)
             {
-                WriteLine(priority + ": " + this[priority - 1]);
+                for(int subtaskIndex = 0; subtaskIndex < sublist.Count; subtaskIndex++)
+                {
+                    if(subtaskIndex == 0)
+                    {
+                        WriteLine(prefix + ": " + sublist[subtaskIndex]);
+                    }
+                    else
+                    {
+                        WriteLine("- " + sublist[subtaskIndex]);
+                    }
+                }
+                prefix++;
             }
         }
 
         public void Reprioritize(string prioritySetting, int index)
         {   
-            string taskItem = this[index];
+            List<string> subTaskList = this[index];
             
             if(prioritySetting == "highest")
             {
                 this.RemoveAt(index);
-                this.Insert(0, taskItem);
+                this.Insert(0, subTaskList);
             }            
             else if(prioritySetting == "lowest")
             {
                 this.RemoveAt(index);
-                this.Insert(this.Count, taskItem); 
+                this.Insert(this.Count, subTaskList); 
             }
             else if(prioritySetting == "higher")
             {
-                if(this.IndexOf(taskItem) != 0)
+                if(this.IndexOf(subTaskList) != 0)
                 {
                     this.RemoveAt(index);
-                    this.Insert(index - 1 , taskItem);
+                    this.Insert(index - 1 , subTaskList);
                 }
                 else
                 {
@@ -70,10 +82,10 @@ namespace ToDoList
             }
             else if(prioritySetting == "lower")
             {
-                if(this.IndexOf(taskItem) != (this.Count - 1))
+                if(this.IndexOf(subTaskList) != (this.Count - 1))
                 {
                     this.RemoveAt(index);
-                    this.Insert(index + 1, taskItem);
+                    this.Insert(index + 1, subTaskList);
                 }
                 else
                 {

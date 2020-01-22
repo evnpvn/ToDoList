@@ -1,6 +1,7 @@
 ﻿using System;
 using static ToDoList.TaskHelpers;
 using static System.Console;
+using System.Collections.Generic;
 
 namespace ToDoList
 {
@@ -8,7 +9,8 @@ namespace ToDoList
     {
         public static void Main(string[] args)
         {
-            Tasklist Tasks = new Tasklist{};
+            //this is now a List of Lists of strings which is null
+            Tasklist tasks = new Tasklist{};
             string mainmenuUserinput = "";
 
             do
@@ -22,7 +24,10 @@ namespace ToDoList
                     string firsttaskUserinput = ReadLine();
                     if(firsttaskUserinput != "0")
                     {
-                        Tasks.Add(firsttaskUserinput);
+                        List<string> firstSubList = new List<string>{};
+                        firstSubList.Add(firsttaskUserinput);
+                        tasks.Add(firstSubList);
+
                         string twoOrMoreTasksUserInput = "";
                         do
                         {
@@ -32,7 +37,9 @@ namespace ToDoList
 
                             if(twoOrMoreTasksUserInput != "0")                      
                             {
-                                Tasks.Add(twoOrMoreTasksUserInput);
+                                List<string> nextSubList = new List<string>{};
+                                nextSubList.Add(twoOrMoreTasksUserInput);
+                                tasks.Add(nextSubList);
                             }
                         }
                         while(twoOrMoreTasksUserInput != "0");
@@ -40,12 +47,12 @@ namespace ToDoList
                 }
                 if(mainmenuUserinput == "2")
                 {      
-                    if(Tasks.TasksIsNull() == false)
+                    if(tasks.TasksIsNull() == false)
                     {
                         string showAllTasksInput = "";
                         do
                         {
-                            Tasks.PrintAllTasks();
+                            tasks.PrintAllTasks();
                             PrintPrioritizeMenu();
                             showAllTasksInput = ReadLine().ToUpper();
 
@@ -57,7 +64,7 @@ namespace ToDoList
                                 string prioritySetting = PrioritySetting(showAllTasksInput);
                                 try
                                 {
-                                    Tasks.Reprioritize(prioritySetting, index); 
+                                    tasks.Reprioritize(prioritySetting, index); 
                                 }
                                 catch(System.ArgumentOutOfRangeException)
                                 {
@@ -70,12 +77,12 @@ namespace ToDoList
                 }
                 if(mainmenuUserinput == "3")
                 {      
-                    if(Tasks.TasksIsNull() == false)
+                    if(tasks.TasksIsNull() == false)
                     {
                         string editTasksInput = "";
                         do
                         {
-                            Tasks.PrintAllTasks();
+                            tasks.PrintAllTasks();
                             PrintEditMenu();
                             editTasksInput = ReadLine().ToUpper();
                             
@@ -88,7 +95,7 @@ namespace ToDoList
                                 {
                                     if(editTasksInput.Contains("EDIT"))
                                     {
-                                        if(Tasks.ValidateIndex(index) == true)
+                                        if(tasks.ValidateIndex(index) == true)
                                         {
                                             PrintEditSubmenu();
                                             string editResponse = ReadLine();
@@ -96,7 +103,7 @@ namespace ToDoList
                                             {
                                                 try
                                                 {
-                                                    Tasks[index] = editResponse;
+                                                    tasks[index][0] = editResponse;
                                                 }
                                                 catch(System.ArgumentOutOfRangeException)
                                                 {
@@ -122,48 +129,34 @@ namespace ToDoList
                 }
                 if(mainmenuUserinput == "4")
                 {
-                    if(Tasks.TasksIsNull() == false)
+                    if(tasks.TasksIsNull() == false)
                     {
                         string subTasksInput = "";
                         do
                         {
-                            Tasks.PrintAllTasks();
+                            //FIXME: some off by 1 error present (no task "1" exists
+                            
+                            tasks.PrintAllTasks();
                             PrintSubTasksMenu();
                             subTasksInput = ReadLine().ToUpper();
 
                             MathMethods SubTaskDigitparsing = new MathMethods();
                             int index = SubTaskDigitparsing.ParseDigitToIndex(subTasksInput);
-
-                            if(SubTaskDigitparsing.strippingSuccess == true)
+                            
+                            if(SubTaskDigitparsing.strippingSuccess == true && subTasksInput != "0")
                             {
                                 if(subTasksInput.Contains("SUB"))
                                 {
-                                    if(Tasks.ValidateIndex(index) == true)
+                                    if(tasks.ValidateIndex(index) == true)
                                     {
                                         PrintSubTasksSubMenu();
                                         string subTaskResponse = ReadLine();
                                         if(subTaskResponse != "0")
                                         {
                                             try
-                                            {
-                                                //create a list within the list
-                                                //this actually may eff up everything else because now the object
-                                                //is no longer a list it's a list of lists
-                                                //let's play it out and see
-                                                //otherwise we will need to change the class
-                                                //and initialize it as a list of lists.
-                                                
-                                                //IF no subtasks exists
-                                                //create a list and initialize it with the task as index 0
-                                                //and the sub-task as 1
-                                                //insert list into the index that the current member is at
-
-                                                //the list will contain the task as 
-
-                                                //IF subtasks exist then add the new subtask as the last item
-
-                                                //Pretty sure this is going to eff everything up.
-
+                                            {                                               
+                                                List<string> subtasklist = tasks[index];
+                                                subtasklist.Add(subTaskResponse);                              
                                             }
                                             catch(System.ArgumentOutOfRangeException)
                                             {
