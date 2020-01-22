@@ -21,19 +21,24 @@ namespace ToDoList
                 using (SqlConnection connection = new SqlConnection(connectString))
                 {
                     connection.Open();
-                    //Create database
-                    //Remove the Drop database command once up and running so data is not deleted each run of program
-                    //TODO: make drop database an action in the TODO list menu
-                    //string sql = "DROP DATABASE IF EXISTS [TodoDB]; CREATE DATABASE [TodoDB]";
-                    string sql = "CREATE DATABASE IF NOT EXISTS [TodoDB];";
+                    //Create database if it doesn't already exist
+                    
+                    StringBuilder strBuildy = new StringBuilder();
+                    strBuildy.Append("IF (db_id(N'TodoDB') IS NULL) ");
+                    strBuildy.Append("BEGIN ");
+                    strBuildy.Append("CREATE DATABASE [TodoDB] ");
+                    strBuildy.Append("END;");
+                    string sql = strBuildy.ToString();
                     using(SqlCommand command = new SqlCommand(sql, connection))
                     {
                         command.ExecuteNonQuery();
                     }
 
-                    //Create the ToDoList Table
+                    //Create the ToDoList Table if it doesn't already exist
                     StringBuilder strBuilder = new StringBuilder();
                     strBuilder.Append("USE TodoDB; ");
+                    strBuilder.Append("IF NOT EXISTS (SELECT * FROM INFORMATION_SCHEMA.TABLES WHERE TABLE_NAME = N'TodoList')");
+                    strBuilder.Append("BEGIN ");
                     strBuilder.Append("CREATE TABLE TodoList ( ");
                     strBuilder.Append("Id INT IDENTITY(1,1) NOT NULL PRIMARY KEY, ");
                     strBuilder.Append("ParentTask TEXT, ");
@@ -43,6 +48,7 @@ namespace ToDoList
                     strBuilder.Append("SubTask4 TEXT, ");
                     strBuilder.Append("SubTask5 TEXT ");
                     strBuilder.Append("); ");
+                    strBuilder.Append("END;");
                     sql = strBuilder.ToString();
 
                     using(SqlCommand command = new SqlCommand(sql, connection))
@@ -210,34 +216,16 @@ namespace ToDoList
                         }
                         if(mainmenuUserinput == "5")
                         {
-                            WriteLine("Enter Reset to confirm deletion of all current tasks in task list");
+                            WriteLine("Enter \"Reset\" to confirm deletion of all current tasks in task list");
                             WriteLine("Or press any key to return to main menu");
 
                             if(ReadLine().ToUpper() == "RESET")
                             {
-                                string sqlString = "DROP TABLE IF EXISTS TodoDB.TodoList;";
+                                string sqlString = "DELETE FROM Todolist;";
                                 using(SqlCommand command = new SqlCommand(sqlString, connection))
                                 {
-                                    command.ExecuteNonQuery();
-                                }
-
-                                //Create the ToDoList Table
-                                StringBuilder strBuild = new StringBuilder();
-                                strBuild.Append("USE TodoDB; ");
-                                strBuild.Append("CREATE TABLE TodoList ( ");
-                                strBuild.Append("Id INT IDENTITY(1,1) NOT NULL PRIMARY KEY, ");
-                                strBuild.Append("ParentTask TEXT, ");
-                                strBuild.Append("SubTask1 TEXT, ");
-                                strBuild.Append("SubTask2 TEXT, ");
-                                strBuild.Append("SubTask3 TEXT, ");
-                                strBuild.Append("SubTask4 TEXT, ");
-                                strBuild.Append("SubTask5 TEXT ");
-                                strBuild.Append("); ");
-                                sql = strBuild.ToString();
-
-                                using(SqlCommand command = new SqlCommand(sql, connection))
-                                {
-                                    command.ExecuteNonQuery();
+                                    int rowsAffected = command.ExecuteNonQuery();
+                                    WriteLine(rowsAffected + " Tasks deleted");
                                 }
                             }
                         }
