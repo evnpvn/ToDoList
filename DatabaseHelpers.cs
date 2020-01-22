@@ -128,7 +128,7 @@ namespace ToDoList
                 {
                     StringBuilder strBuilder = new StringBuilder();
                     strBuilder.Append("USE TodoDB; ");
-                    strBuilder.Append("DELETE FROM dbo.TodoList;");
+                    strBuilder.Append("DELETE FROM TodoList;");
                     sql = strBuilder.ToString();
                     connection.Open();
                     using(SqlCommand command = new SqlCommand(sql, connection))
