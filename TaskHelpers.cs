@@ -15,6 +15,7 @@ namespace ToDoList
             WriteLine("2 - Show all tasks");
             WriteLine("3 - Edit existing tasks");
             WriteLine("4 - Create new sub-task");
+            WriteLine("5 - Reset task list (this will delete all existing tasks)");
             WriteLine("9 - Exit program");
         }
 

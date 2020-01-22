@@ -24,7 +24,8 @@ namespace ToDoList
                     //Create database
                     //Remove the Drop database command once up and running so data is not deleted each run of program
                     //TODO: make drop database an action in the TODO list menu
-                    string sql = "DROP DATABASE IF EXISTS [TodoDB]; CREATE DATABASE [TodoDB]";
+                    //string sql = "DROP DATABASE IF EXISTS [TodoDB]; CREATE DATABASE [TodoDB]";
+                    string sql = "CREATE DATABASE IF NOT EXISTS [TodoDB];";
                     using(SqlCommand command = new SqlCommand(sql, connection))
                     {
                         command.ExecuteNonQuery();
@@ -206,6 +207,39 @@ namespace ToDoList
                                 }
                                 while(subTasksInput != "0");                                           
                             }  
+                        }
+                        if(mainmenuUserinput == "5")
+                        {
+                            WriteLine("Enter Reset to confirm deletion of all current tasks in task list");
+                            WriteLine("Or press any key to return to main menu");
+
+                            if(ReadLine().ToUpper() == "RESET")
+                            {
+                                string sqlString = "DROP TABLE IF EXISTS TodoDB.TodoList;";
+                                using(SqlCommand command = new SqlCommand(sqlString, connection))
+                                {
+                                    command.ExecuteNonQuery();
+                                }
+
+                                //Create the ToDoList Table
+                                StringBuilder strBuild = new StringBuilder();
+                                strBuild.Append("USE TodoDB; ");
+                                strBuild.Append("CREATE TABLE TodoList ( ");
+                                strBuild.Append("Id INT IDENTITY(1,1) NOT NULL PRIMARY KEY, ");
+                                strBuild.Append("ParentTask TEXT, ");
+                                strBuild.Append("SubTask1 TEXT, ");
+                                strBuild.Append("SubTask2 TEXT, ");
+                                strBuild.Append("SubTask3 TEXT, ");
+                                strBuild.Append("SubTask4 TEXT, ");
+                                strBuild.Append("SubTask5 TEXT ");
+                                strBuild.Append("); ");
+                                sql = strBuild.ToString();
+
+                                using(SqlCommand command = new SqlCommand(sql, connection))
+                                {
+                                    command.ExecuteNonQuery();
+                                }
+                            }
                         }
                     }
                     while(mainmenuUserinput != "9");
