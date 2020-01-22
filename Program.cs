@@ -1,4 +1,3 @@
-﻿using System;
 using static ToDoList.TaskHelpers;
 using static System.Console;
 using System.Collections.Generic;
@@ -12,6 +11,13 @@ namespace ToDoList
             //this is now a List of Lists of strings which is null
             Tasklist tasks = new Tasklist{};
             string mainmenuUserinput = "";
+
+            //Connect to SQL server and initiate database and table 
+            DatabaseHelpers dbHelpers = new DatabaseHelpers();
+            dbHelpers.dbServerConnect();
+            dbHelpers.dbCreate();
+            dbHelpers.dbTableCreate();
+            //dbHelpers.dbInsertTestRecs();
 
             do
             {
@@ -135,7 +141,6 @@ namespace ToDoList
                         do
                         {
                             //FIXME: some off by 1 error present (no task "1" exists
-                            
                             tasks.PrintAllTasks();
                             PrintSubTasksMenu();
                             subTasksInput = ReadLine().ToUpper();
@@ -178,6 +183,16 @@ namespace ToDoList
                         }
                         while(subTasksInput != "0");                                           
                     }  
+                }
+                if(mainmenuUserinput == "5")
+                {
+                    WriteLine("Enter \"Reset\" to confirm deletion of all current tasks in task list");
+                    WriteLine("Or press any key to return to main menu");
+
+                    if(ReadLine().ToUpper() == "RESET")
+                    {
+                        dbHelpers.dbTableClear();
+                    }
                 }
             }
             while(mainmenuUserinput != "9");
