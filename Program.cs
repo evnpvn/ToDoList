@@ -140,7 +140,6 @@ namespace ToDoList
                         string subTasksInput = "";
                         do
                         {
-                            //FIXME: some off by 1 error present (no task "1" exists
                             tasks.PrintAllTasks();
                             PrintSubTasksMenu();
                             subTasksInput = ReadLine().ToUpper();

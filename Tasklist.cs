@@ -21,7 +21,7 @@ namespace ToDoList
 
         public bool ValidateIndex(int index)
         {
-            if(index < (this.Count) && index > 0)
+            if(index < (this.Count) && index >= 0)
             {
                 return true;
             }
