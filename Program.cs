@@ -154,20 +154,25 @@ namespace ToDoList
                                 {
                                     if(tasks.ValidateIndex(index) == true)
                                     {
-                                        PrintSubTasksSubMenu();
-                                        string subTaskResponse = ReadLine();
-                                        if(subTaskResponse != "0")
+                                        string subTaskResponse = "";
+                                        while(subTaskResponse != "0")
                                         {
-                                            try
-                                            {                                               
-                                                List<string> subtasklist = tasks[index];
-                                                subtasklist.Add(subTaskResponse);                              
-                                            }
-                                            catch(System.ArgumentOutOfRangeException)
+                                            PrintSubTasksSubMenu();
+                                            subTaskResponse = ReadLine();
+                                            if(subTaskResponse != "0")
                                             {
-                                                NoTaskExists(index);
+                                                try
+                                                {                                               
+                                                    List<string> subtasklist = tasks[index];
+                                                    subtasklist.Add(subTaskResponse);                              
+                                                }
+                                                catch(System.ArgumentOutOfRangeException)
+                                                {
+                                                    NoTaskExists(index);
+                                                }
                                             }
                                         }
+                                        
                                     }
                                     else
                                     {
@@ -186,25 +191,25 @@ namespace ToDoList
                 }
                 if(mainmenuUserinput == "5")
                 {
-                    //TODO:Make save tasks work and then move it to be outside 
-                    //of the outermost while loop so it saves on exit.
+                    //TODO:Move it to be outside of the outermost while loop so it saves on exit.
                     WriteLine("Enter any key to confirm saving all tasks");
                     ReadKey(true);
-
-                    //Take the first list in tasks<list>
-                    //loop through and store each <string> in the list in the database.
-                    //Ideally make 1 call to the database for this whole thing
-                    //Would be ok to make 1 call per task<list>.
-
-                    //what I should do is just set the task indexes as variables/parametes
-                    //in the sql code and then pass the command that way.
-
                     dbHelpers.dbSaveRecords(tasks);
 
                     WriteLine(tasks.Count + "Tasks saved");
                 }
 
                 if(mainmenuUserinput == "6")
+                {
+                    
+                    WriteLine("Enter any key to confirm restoring all saved tasks");
+                    ReadKey(true);
+                    dbHelpers.dbRestoreTasks();
+
+                    WriteLine(tasks.Count + "Tasks saved");
+                }
+
+                if(mainmenuUserinput == "7")
                 {
                     WriteLine("Enter \"Reset\" to confirm deletion of all current tasks in task list");
                     WriteLine("Or press any key to return to main menu");

@@ -152,8 +152,8 @@ namespace ToDoList
                 {
                     StringBuilder strBuilder = new StringBuilder();
                     strBuilder.Append("USE TodoDB; ");
-                    strBuilder.Append("INSERT INTO TodoList (ParentTask, SubTask1, SubTask2, SubTask3, SubTask4, SubTask5) ");
-                    strBuilder.Append("VALUES (@parentTask, @subT1, @subT2, @subT3, @subT4, @subT5);");
+                    strBuilder.Append("INSERT INTO TodoList (ParentTask, SubTask1, SubTask2, SubTask3) ");
+                    strBuilder.Append("VALUES (@parentTask, @subT1, @subT2, @subT3);");
                     sql = strBuilder.ToString();
 
                     //will probably need something to validate that a subtask is not null before trying to insert
@@ -167,8 +167,8 @@ namespace ToDoList
                         command.Parameters.AddWithValue("@subT1", tasks[0][1]);
                         command.Parameters.AddWithValue("@subT2", tasks[0][2]);
                         command.Parameters.AddWithValue("@subT3", tasks[0][3]);
-                        command.Parameters.AddWithValue("@subT4", tasks[0][4]);
-                        command.Parameters.AddWithValue("@subT5", tasks[0][5]);
+                        //command.Parameters.AddWithValue("@subT4", tasks[0][4]);
+                        //command.Parameters.AddWithValue("@subT5", tasks[0][5]);
 
                         int rowsAffected = command.ExecuteNonQuery();
                         WriteLine(rowsAffected + " row(s) inserted");
@@ -179,6 +179,39 @@ namespace ToDoList
             {
                 WriteLine(exception.ToString());
             }
-        }                
+        }
+
+        public void dbRestoreTasks()
+        {
+            try
+            {
+                using (SqlConnection connection = new SqlConnection(_connectString))
+                {
+                    StringBuilder strBuilder = new StringBuilder();
+                    strBuilder.Append("USE TodoDB; ");
+                    strBuilder.Append("SELECT * FROM TodoList");
+                    sql = strBuilder.ToString();
+                    connection.Open();
+
+                    //TODO: create a reader
+                    //This actually doesn't do what it should for this method.
+                    //It should just take the values and loop through and deserialize it back into the list object
+                    //printing to screen like this is a good test but not needed
+                    using(SqlCommand command = new SqlCommand(sql, connection))
+                    {
+                        using (SqlDataReader reader = command.ExecuteReader())
+                        {
+                            reader.Read();
+                            WriteLine("{0} {1} {2} {3} {4} {5}", reader.GetValue(0), reader.GetValue(1), reader.GetValue(3), 
+                                                                 reader.GetValue(4), reader.GetValue(5));
+                        }
+                    }               
+                }
+            }
+            catch(SqlException exception)
+            {
+                WriteLine(exception.ToString());
+            }
+        }              
     }
 }
