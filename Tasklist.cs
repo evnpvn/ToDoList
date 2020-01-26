@@ -9,8 +9,10 @@ namespace ToDoList
         {          
             if(this.Count == 0)
             {
+                ForegroundColor = System.ConsoleColor.DarkRed;
                 WriteLine();
                 WriteLine("No tasks found.");
+                ResetColor();
                 return true;
             }
             else
@@ -33,6 +35,7 @@ namespace ToDoList
 
         public void PrintAllTasks()
         {
+            ForegroundColor = System.ConsoleColor.Green;
             WriteLine();
             WriteLine("Current Tasks");
             int prefix = 1;
@@ -51,6 +54,7 @@ namespace ToDoList
                 }
                 prefix++;
             }
+            ResetColor();
         }
 
         public void Reprioritize(string prioritySetting, int index)
