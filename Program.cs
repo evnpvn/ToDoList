@@ -191,7 +191,7 @@ namespace ToDoList
                 }
                 if(mainmenuUserinput == "5")
                 {
-                    //TODO:Move it to be outside of the outermost while loop so it saves on exit.
+                    //TODO:Move it to be outside of the outermost while loop so it saves on exit automatically.
                     WriteLine("Enter any key to confirm saving all tasks");
                     ReadKey(true);
                     dbHelpers.dbSaveRecords(tasks);
@@ -204,9 +204,8 @@ namespace ToDoList
                     
                     WriteLine("Enter any key to confirm restoring all saved tasks");
                     ReadKey(true);
-                    dbHelpers.dbRestoreTasks();
+                    dbHelpers.dbRestoreTasks(tasks);
 
-                    WriteLine(tasks.Count + "Tasks saved");
                 }
 
                 if(mainmenuUserinput == "7")

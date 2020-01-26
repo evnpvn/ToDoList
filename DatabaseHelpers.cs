@@ -1,6 +1,8 @@
 using static System.Console;
 using System.Text;
 using System.Data.SqlClient;
+using static ToDoList.TaskHelpers;
+using System.Collections.Generic;
 
 namespace ToDoList
 {
@@ -167,8 +169,6 @@ namespace ToDoList
                         command.Parameters.AddWithValue("@subT1", tasks[0][1]);
                         command.Parameters.AddWithValue("@subT2", tasks[0][2]);
                         command.Parameters.AddWithValue("@subT3", tasks[0][3]);
-                        //command.Parameters.AddWithValue("@subT4", tasks[0][4]);
-                        //command.Parameters.AddWithValue("@subT5", tasks[0][5]);
 
                         int rowsAffected = command.ExecuteNonQuery();
                         WriteLine(rowsAffected + " row(s) inserted");
@@ -181,7 +181,7 @@ namespace ToDoList
             }
         }
 
-        public void dbRestoreTasks()
+        public Tasklist dbRestoreTasks(Tasklist tasks)
         {
             try
             {
@@ -193,24 +193,33 @@ namespace ToDoList
                     sql = strBuilder.ToString();
                     connection.Open();
 
-                    //TODO: create a reader
-                    //This actually doesn't do what it should for this method.
-                    //It should just take the values and loop through and deserialize it back into the list object
-                    //printing to screen like this is a good test but not needed
                     using(SqlCommand command = new SqlCommand(sql, connection))
                     {
                         using (SqlDataReader reader = command.ExecuteReader())
                         {
                             reader.Read();
-                            WriteLine("{0} {1} {2} {3} {4} {5}", reader.GetValue(0), reader.GetValue(1), reader.GetValue(3), 
-                                                                 reader.GetValue(4), reader.GetValue(5));
+
+                            //Create a subtask list
+                            List<string> firstSubList = new List<string>{};
+
+                            //Insert the first Parent task as the first value within the first sub-list
+                            firstSubList.Add(reader.GetString(1));
+                            firstSubList.Add(reader.GetString(2));
+                            firstSubList.Add(reader.GetString(3));
+                            firstSubList.Add(reader.GetString(4));
+                            
+                            //add the sublist back to the main list
+                            tasks.Add(firstSubList);
+
+                            return tasks;
                         }
-                    }               
+                    }              
                 }
             }
             catch(SqlException exception)
             {
                 WriteLine(exception.ToString());
+                return tasks;
             }
         }              
     }
