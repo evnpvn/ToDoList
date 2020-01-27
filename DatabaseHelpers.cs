@@ -156,24 +156,31 @@ namespace ToDoList
                     StringBuilder strBuilder = new StringBuilder();
                     strBuilder.Append("USE TodoDB; ");
                     strBuilder.Append("INSERT INTO TodoList (ParentTask, SubTask1, SubTask2, SubTask3, SubTask4, SubTask5) ");
-                    strBuilder.Append("VALUES (@parentTask, @subT1, @subT2, @subT3, @subT4, @subT5);");
+                    strBuilder.Append("VALUES (@subT0, @subT1, @subT2, @subT3, @subT4, @subT5);");
                     sql = strBuilder.ToString();
+                    
+                    string sqlParam = "";
+                    string paramprefix = "@subT";
+                    
 
                     connection.Open();
                     
                     foreach(List<string> subtasklist in tasks)
                     {
+                        int sublistIndex = 0;
+
                         using (SqlCommand command = new SqlCommand(sql, connection))
                         {
-                            //technically making this a foreach loop would prevent it from saving more than the
-                            //correct number of records
-                            command.Parameters.AddWithValue("@parentTask", subtasklist[0]);
-                            command.Parameters.AddWithValue("@subT1", subtasklist[1]);
-                            command.Parameters.AddWithValue("@subT2", subtasklist[2]);
-                            command.Parameters.AddWithValue("@subT3", subtasklist[3]);
-                            command.Parameters.AddWithValue("@subT4", subtasklist[4]);
-                            command.Parameters.AddWithValue("@subT5", subtasklist[5]);
-                            
+                            //ideally also create the SQL command alongside this each loop
+                            //the SQL side may be fine actually, it was only this causing an issue.
+                            foreach(string subtask in subtasklist)
+                            {
+                                sqlParam = string.Concat(paramprefix, sublistIndex);
+                                command.Parameters.AddWithValue(sqlParam, subtasklist[sublistIndex]);
+
+                                sublistIndex++;
+                            }
+
                             int rowsAffected = command.ExecuteNonQuery();
                             WriteLine(rowsAffected + " row(s) inserted");
                         }

@@ -125,8 +125,10 @@ namespace ToDoList
                                     }
                                     else
                                     {
+                                        ForegroundColor = System.ConsoleColor.DarkRed;
                                         WriteLine();
                                         WriteLine("Not a valid option entered");
+                                        ResetColor();
                                     }
                                 }
                             }
@@ -181,8 +183,10 @@ namespace ToDoList
                                 }
                                 else
                                 {
+                                    ForegroundColor = System.ConsoleColor.DarkRed;
                                     WriteLine();
                                     WriteLine("Not a valid option entered");
+                                    ResetColor();
                                 }
                             }
                         }
