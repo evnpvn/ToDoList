@@ -95,6 +95,7 @@ namespace ToDoList
         }
 
         //Insert some test records into the table
+        //TODO: Delete when not needed
         public void dbInsertTestRecs()
         {
             try
@@ -154,25 +155,30 @@ namespace ToDoList
                 {
                     StringBuilder strBuilder = new StringBuilder();
                     strBuilder.Append("USE TodoDB; ");
-                    strBuilder.Append("INSERT INTO TodoList (ParentTask, SubTask1, SubTask2, SubTask3) ");
-                    strBuilder.Append("VALUES (@parentTask, @subT1, @subT2, @subT3);");
+                    strBuilder.Append("INSERT INTO TodoList (ParentTask, SubTask1, SubTask2, SubTask3, SubTask4, SubTask5) ");
+                    strBuilder.Append("VALUES (@parentTask, @subT1, @subT2, @subT3, @subT4, @subT5);");
                     sql = strBuilder.ToString();
 
-                    //will probably need something to validate that a subtask is not null before trying to insert
-                    //potentially make the index values variables as well
-                        //that will allow it to loop through all tasks
-
                     connection.Open();
-                    using (SqlCommand command = new SqlCommand(sql, connection))
+                    
+                    foreach(List<string> subtasklist in tasks)
                     {
-                        command.Parameters.AddWithValue("@parentTask", tasks[0][0]);
-                        command.Parameters.AddWithValue("@subT1", tasks[0][1]);
-                        command.Parameters.AddWithValue("@subT2", tasks[0][2]);
-                        command.Parameters.AddWithValue("@subT3", tasks[0][3]);
-
-                        int rowsAffected = command.ExecuteNonQuery();
-                        WriteLine(rowsAffected + " row(s) inserted");
-                    }
+                        using (SqlCommand command = new SqlCommand(sql, connection))
+                        {
+                            //technically making this a foreach loop would prevent it from saving more than the
+                            //correct number of records
+                            command.Parameters.AddWithValue("@parentTask", subtasklist[0]);
+                            command.Parameters.AddWithValue("@subT1", subtasklist[1]);
+                            command.Parameters.AddWithValue("@subT2", subtasklist[2]);
+                            command.Parameters.AddWithValue("@subT3", subtasklist[3]);
+                            command.Parameters.AddWithValue("@subT4", subtasklist[4]);
+                            command.Parameters.AddWithValue("@subT5", subtasklist[5]);
+                            
+                            int rowsAffected = command.ExecuteNonQuery();
+                            WriteLine(rowsAffected + " row(s) inserted");
+                        }
+                    } 
+                    
                 }
             }
             catch(SqlException exception)
@@ -197,20 +203,21 @@ namespace ToDoList
                     {
                         using (SqlDataReader reader = command.ExecuteReader())
                         {
-                            reader.Read();
+                            while(reader.Read())
+                            {
+                                //FIXME: need to add validation to not try and grab null values
+                                List<string> subList = new List<string>{};
 
-                            //Create a subtask list
-                            List<string> firstSubList = new List<string>{};
+                                subList.Add(reader.GetString(1));
+                                subList.Add(reader.GetString(2));
+                                subList.Add(reader.GetString(3));
+                                subList.Add(reader.GetString(4));
+                                subList.Add(reader.GetString(5));
+                                subList.Add(reader.GetString(6));
 
-                            //Insert the first Parent task as the first value within the first sub-list
-                            firstSubList.Add(reader.GetString(1));
-                            firstSubList.Add(reader.GetString(2));
-                            firstSubList.Add(reader.GetString(3));
-                            firstSubList.Add(reader.GetString(4));
-                            
-                            //add the sublist back to the main list
-                            tasks.Add(firstSubList);
-
+                                tasks.Add(subList);
+                            }
+                            //Write something to the console for the number of tasks restored
                             return tasks;
                         }
                     }              

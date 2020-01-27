@@ -66,17 +66,17 @@ namespace ToDoList
                             MathMethods PriorityDigitparsing = new MathMethods();
                             int index = PriorityDigitparsing.ParseDigitToIndex(showAllTasksInput);
 
-                            if(PriorityDigitparsing.strippingSuccess == true)
+                            if(PriorityDigitparsing.strippingSuccess == true && index > -1)
                             {
-                                string prioritySetting = PrioritySetting(showAllTasksInput);
-                                try
-                                {
-                                    tasks.Reprioritize(prioritySetting, index); 
-                                }
-                                catch(System.ArgumentOutOfRangeException)
-                                {
-                                    NoTaskExists(index);
-                                }
+                                 string prioritySetting = PrioritySetting(showAllTasksInput);
+                                 tasks.Reprioritize(prioritySetting, index); 
+                            }
+                            else if(index == -1)
+                            {
+                            }
+                            else
+                            {
+                                NoTaskExists(index);
                             }
                         }
                         while(showAllTasksInput != "0");                                           
