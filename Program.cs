@@ -66,6 +66,9 @@ namespace ToDoList
                             MathMethods PriorityDigitparsing = new MathMethods();
                             int index = PriorityDigitparsing.ParseDigitToIndex(showAllTasksInput);
 
+                            //FIXME: throws index out of range error currently.
+                            //probably because I got rid of the try catch block.
+                            //Add that back in.
                             if(PriorityDigitparsing.strippingSuccess == true && index > -1)
                             {
                                  string prioritySetting = PrioritySetting(showAllTasksInput);

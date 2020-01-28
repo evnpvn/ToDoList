@@ -161,23 +161,28 @@ namespace ToDoList
                     
                     string sqlParam = "";
                     string paramprefix = "@subT";
-                    
+                    connection.Open();  
 
-                    connection.Open();
-                    
                     foreach(List<string> subtasklist in tasks)
                     {
                         int sublistIndex = 0;
-
                         using (SqlCommand command = new SqlCommand(sql, connection))
                         {
-                            //ideally also create the SQL command alongside this each loop
-                            //the SQL side may be fine actually, it was only this causing an issue.
-                            foreach(string subtask in subtasklist)
+                            for(int i = 0; i < 7; i++)
                             {
                                 sqlParam = string.Concat(paramprefix, sublistIndex);
-                                command.Parameters.AddWithValue(sqlParam, subtasklist[sublistIndex]);
 
+                                if(subtasklist.Count > sublistIndex && subtasklist[sublistIndex] != null 
+                                                                    && subtasklist[sublistIndex] != "")
+                                {
+                                    command.Parameters.AddWithValue(sqlParam, subtasklist[sublistIndex]);
+                                }
+                                else
+                                {
+                                    command.Parameters.AddWithValue(sqlParam, System.Data.SqlTypes.SqlString.Null);
+                                    //figure out what I could pass to set the param to NULL
+                                    //the above code should work though.
+                                }
                                 sublistIndex++;
                             }
 
@@ -212,15 +217,25 @@ namespace ToDoList
                         {
                             while(reader.Read())
                             {
-                                //FIXME: need to add validation to not try and grab null values
                                 List<string> subList = new List<string>{};
 
-                                subList.Add(reader.GetString(1));
-                                subList.Add(reader.GetString(2));
-                                subList.Add(reader.GetString(3));
-                                subList.Add(reader.GetString(4));
-                                subList.Add(reader.GetString(5));
-                                subList.Add(reader.GetString(6));
+                                if(!reader.IsDBNull(1))
+                                {   subList.Add(reader.GetString(1));   }
+                                
+                                if(!reader.IsDBNull(2))
+                                {   subList.Add(reader.GetString(2));   }
+                                
+                                if(!reader.IsDBNull(3))
+                                {   subList.Add(reader.GetString(3));   }
+
+                                if(!reader.IsDBNull(4))
+                                {   subList.Add(reader.GetString(4));   }
+
+                                if(!reader.IsDBNull(5))
+                                {   subList.Add(reader.GetString(5));   }
+
+                                if(!reader.IsDBNull(6))
+                                {   subList.Add(reader.GetString(6));   }
 
                                 tasks.Add(subList);
                             }
