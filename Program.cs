@@ -8,16 +8,13 @@ namespace ToDoList
     {
         public static void Main(string[] args)
         {
-            //this is now a List of Lists of strings which is null
             Tasklist tasks = new Tasklist{};
             string mainmenuUserinput = "";
 
-            //Connect to SQL server and initiate database and table 
             DatabaseHelpers dbHelpers = new DatabaseHelpers();
             dbHelpers.dbServerConnect();
             dbHelpers.dbCreate();
             dbHelpers.dbTableCreate();
-            //dbHelpers.dbInsertTestRecs();
 
             do
             {
@@ -65,17 +62,17 @@ namespace ToDoList
                             MathMethods PriorityDigitparsing = new MathMethods();
                             int index = PriorityDigitparsing.ParseDigitToIndex(showAllTasksInput);
 
-                            if(PriorityDigitparsing.strippingSuccess == true)
+                            if(PriorityDigitparsing.strippingSuccess == true && index > -1 && index < tasks.Count)
                             {
-                                string prioritySetting = PrioritySetting(showAllTasksInput);
-                                try
-                                {
-                                    tasks.Reprioritize(prioritySetting, index); 
-                                }
-                                catch(System.ArgumentOutOfRangeException)
-                                {
-                                    NoTaskExists(index);
-                                }
+                                 string prioritySetting = PrioritySetting(showAllTasksInput);
+                                 tasks.Reprioritize(prioritySetting, index); 
+                            }
+                            else if(index == -1)
+                            {
+                            }
+                            else
+                            {
+                                NoTaskExists(index);
                             }
                         }
                         while(showAllTasksInput != "0");                                           
@@ -124,8 +121,10 @@ namespace ToDoList
                                     }
                                     else
                                     {
+                                        ForegroundColor = System.ConsoleColor.DarkRed;
                                         WriteLine();
                                         WriteLine("Not a valid option entered");
+                                        ResetColor();
                                     }
                                 }
                             }
@@ -140,7 +139,6 @@ namespace ToDoList
                         string subTasksInput = "";
                         do
                         {
-                            //FIXME: some off by 1 error present (no task "1" exists
                             tasks.PrintAllTasks();
                             PrintSubTasksMenu();
                             subTasksInput = ReadLine().ToUpper();
@@ -154,20 +152,25 @@ namespace ToDoList
                                 {
                                     if(tasks.ValidateIndex(index) == true)
                                     {
-                                        PrintSubTasksSubMenu();
-                                        string subTaskResponse = ReadLine();
-                                        if(subTaskResponse != "0")
+                                        string subTaskResponse = "";
+                                        while(subTaskResponse != "0")
                                         {
-                                            try
-                                            {                                               
-                                                List<string> subtasklist = tasks[index];
-                                                subtasklist.Add(subTaskResponse);                              
-                                            }
-                                            catch(System.ArgumentOutOfRangeException)
+                                            PrintSubTasksSubMenu();
+                                            subTaskResponse = ReadLine();
+                                            if(subTaskResponse != "0")
                                             {
-                                                NoTaskExists(index);
+                                                try
+                                                {                                               
+                                                    List<string> subtasklist = tasks[index];
+                                                    subtasklist.Add(subTaskResponse);                              
+                                                }
+                                                catch(System.ArgumentOutOfRangeException)
+                                                {
+                                                    NoTaskExists(index);
+                                                }
                                             }
                                         }
+                                        
                                     }
                                     else
                                     {
@@ -176,8 +179,10 @@ namespace ToDoList
                                 }
                                 else
                                 {
+                                    ForegroundColor = System.ConsoleColor.DarkRed;
                                     WriteLine();
                                     WriteLine("Not a valid option entered");
+                                    ResetColor();
                                 }
                             }
                         }
@@ -185,6 +190,22 @@ namespace ToDoList
                     }  
                 }
                 if(mainmenuUserinput == "5")
+                {
+                    WriteLine("Enter any key to confirm saving all tasks");
+                    ReadKey(true);
+                    dbHelpers.dbSaveRecords(tasks);
+
+                    WriteLine(tasks.Count + "Tasks saved");
+                }
+
+                if(mainmenuUserinput == "6")
+                {   
+                    WriteLine("Enter any key to confirm restoring all saved tasks");
+                    ReadKey(true);
+                    dbHelpers.dbRestoreTasks(tasks);
+                }
+
+                if(mainmenuUserinput == "7")
                 {
                     WriteLine("Enter \"Reset\" to confirm deletion of all current tasks in task list");
                     WriteLine("Or press any key to return to main menu");

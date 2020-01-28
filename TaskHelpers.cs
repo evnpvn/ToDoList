@@ -1,3 +1,4 @@
+using System;
 using static System.Console;
 
 namespace ToDoList
@@ -6,6 +7,7 @@ namespace ToDoList
     {
         public static void PrintMainMenu()
         {
+            ForegroundColor = ConsoleColor.Cyan;
             WriteLine();
             WriteLine("Main Menu");
             WriteLine("To select any of the functions below enter the related number and hit return");
@@ -13,8 +15,11 @@ namespace ToDoList
             WriteLine("2 - Show all tasks");
             WriteLine("3 - Edit existing tasks");
             WriteLine("4 - Create new sub-task");
-            WriteLine("5 - Reset task list (this will delete all existing tasks)");
+            WriteLine("5 - Save tasks");
+            WriteLine("6 - Restore saved tasks");
+            WriteLine("7 - Reset task list (this will delete all existing tasks)");
             WriteLine("9 - Exit program");
+            ResetColor();
         }
 
         public static void PrintPrioritizeMenu()
@@ -59,8 +64,10 @@ namespace ToDoList
         }
 
         public static void NoTaskExists(int index)
-        {
+        {   
+            ForegroundColor = ConsoleColor.DarkRed;
             WriteLine("No task number \"" + (index + 1) + "\" exists");
+            ResetColor();
         }
 
         public static string PrioritySetting(string showAllTasksInput)
