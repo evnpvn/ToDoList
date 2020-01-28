@@ -95,7 +95,7 @@ namespace ToDoList
         }
 
         //Insert some test records into the table
-        //TODO: Delete when not needed
+        //used for testing
         public void dbInsertTestRecs()
         {
             try
@@ -180,8 +180,6 @@ namespace ToDoList
                                 else
                                 {
                                     command.Parameters.AddWithValue(sqlParam, System.Data.SqlTypes.SqlString.Null);
-                                    //figure out what I could pass to set the param to NULL
-                                    //the above code should work though.
                                 }
                                 sublistIndex++;
                             }
@@ -239,7 +237,7 @@ namespace ToDoList
 
                                 tasks.Add(subList);
                             }
-                            //Write something to the console for the number of tasks restored
+                            tasks.PrintAllTasks();
                             return tasks;
                         }
                     }              

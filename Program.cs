@@ -1,7 +1,6 @@
 using static ToDoList.TaskHelpers;
 using static System.Console;
 using System.Collections.Generic;
-using System.Data.SqlClient;
 
 namespace ToDoList
 {
@@ -9,16 +8,13 @@ namespace ToDoList
     {
         public static void Main(string[] args)
         {
-            //this is now a List of Lists of strings which is null
             Tasklist tasks = new Tasklist{};
             string mainmenuUserinput = "";
 
-            //Connect to SQL server and initiate database and table 
             DatabaseHelpers dbHelpers = new DatabaseHelpers();
             dbHelpers.dbServerConnect();
             dbHelpers.dbCreate();
             dbHelpers.dbTableCreate();
-            //dbHelpers.dbInsertTestRecs();
 
             do
             {
@@ -66,10 +62,7 @@ namespace ToDoList
                             MathMethods PriorityDigitparsing = new MathMethods();
                             int index = PriorityDigitparsing.ParseDigitToIndex(showAllTasksInput);
 
-                            //FIXME: throws index out of range error currently.
-                            //probably because I got rid of the try catch block.
-                            //Add that back in.
-                            if(PriorityDigitparsing.strippingSuccess == true && index > -1)
+                            if(PriorityDigitparsing.strippingSuccess == true && index > -1 && index < tasks.Count)
                             {
                                  string prioritySetting = PrioritySetting(showAllTasksInput);
                                  tasks.Reprioritize(prioritySetting, index); 
@@ -198,7 +191,6 @@ namespace ToDoList
                 }
                 if(mainmenuUserinput == "5")
                 {
-                    //TODO:Move it to be outside of the outermost while loop so it saves on exit automatically.
                     WriteLine("Enter any key to confirm saving all tasks");
                     ReadKey(true);
                     dbHelpers.dbSaveRecords(tasks);
@@ -207,12 +199,10 @@ namespace ToDoList
                 }
 
                 if(mainmenuUserinput == "6")
-                {
-                    
+                {   
                     WriteLine("Enter any key to confirm restoring all saved tasks");
                     ReadKey(true);
                     dbHelpers.dbRestoreTasks(tasks);
-
                 }
 
                 if(mainmenuUserinput == "7")
